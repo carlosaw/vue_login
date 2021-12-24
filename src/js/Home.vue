@@ -1,12 +1,15 @@
 <template>
-		
 	<div class="container">
+		<div><p>Página Home: {{t}}</p></div>
+		<br/>
+		<router-link to="/sair">Sair</router-link>	
 					
 		<div v-if="error">Desculpe, não podemos pegar as informações no momento. Tente novamente mais tarde!</div>
+		
 		<div v-else class="cartaz"><h2>Filmes em Cartaz</h2></div>
 						
 			<div class="films">
-				<div v-for="film in films" class="film_item">
+				<div v-for-key="film in films" class="film_item">
 					<img v-bind:src="film.avatar" alt="" /><br/>
 					<p>{{ film.titulo }}</p>
 				</div>
@@ -23,7 +26,8 @@ export default {
 		return {
 			films: [],
 			error:false,
-			loading:true
+			loading:true,
+			t:'Bonieky'
 		}
 	},
   mounted() {
@@ -35,6 +39,10 @@ export default {
 		.catch(error => {
 			this.error = true;
 		})
+		let jwt = localStorage.getItem('jwt');
+		if(jwt == '' || typeof jwt == 'undefined') {
+			this.$router.push({name:'login'});
+		}
   }
 }
 </script>
@@ -45,7 +53,7 @@ export default {
 		  flex-direction: column;
 	}
 	.film_item {
-		border: 1px solid #EEE);
+		border: 1px solid #EEE;
 		padding: 10px;
 		margin: 0px;
 		max-width: 15%;
